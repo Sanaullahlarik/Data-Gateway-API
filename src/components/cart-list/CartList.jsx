@@ -1,6 +1,6 @@
 import { Box, Button, Drawer, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { decreaseQuantity, increaseQuantity } from '../store/slices/cart/cartSlice';
+import { decreaseQuantity, deleteProduct, increaseQuantity } from '../store/slices/cart/cartSlice';
 
 const CartList = (props) => {
   const { openCartList, toggleCartList } = props;
@@ -38,13 +38,21 @@ const CartList = (props) => {
                   >
                     +
                   </Button>
-                  <Button
+                  <Button className='my-2'
                     onClick={() => dispatch(decreaseQuantity({ id: item.id }))}
                     size="small"
                     variant="outlined"
                     color="error"
                   >
                     -
+                  </Button>
+                  <Button
+                    onClick={() => dispatch(deleteProduct({ id: item.id }))}
+                    size="small"
+                    variant="outlined"
+                    color="error"
+                  >
+                    Delete
                   </Button>
                 </Box>
               </Box>
