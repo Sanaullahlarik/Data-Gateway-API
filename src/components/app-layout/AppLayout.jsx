@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Box, Button, CssBaseline, Drawer, IconButton, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography, Divider, Menu, MenuItem, Badge, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useSelector } from 'react-redux';
 import CartList from '../cart-list/CartList';
@@ -35,7 +35,7 @@ const AppLayout = () => {
 
 
     const drawerWidth = 240;
-    const navItems = ['Home', 'About', 'Contact'];
+    const navItems = [{ id: 1, navItem: 'Home', navLink: '/' }, { id: 2, navItem: 'About', navLink: '/' }, { id: 3, navItem: 'Contact', navLink: '/contact-us' }];
 
     const drawer = (
         <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -45,11 +45,13 @@ const AppLayout = () => {
             <Divider />
             <List>
                 {navItems.map((item) => (
-                    <ListItem key={item} disablePadding>
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary={item} />
-                        </ListItemButton>
-                    </ListItem>
+                    <Link key={item?.id} to={item?.navLink}>
+                        <ListItem disablePadding>
+                            <ListItemButton sx={{ textAlign: 'center' }}>
+                                <ListItemText primary={item?.navItem} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
         </Box>
@@ -76,9 +78,11 @@ const AppLayout = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }}>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}>
-                                {item}
-                            </Button>
+                            <Link key={item?.id} to={item?.navLink}>
+                                <Button sx={{ color: '#fff' }}>
+                                    {item?.navItem}
+                                </Button>
+                            </Link>
                         ))}
                     </Box>
                     <Button>
@@ -104,7 +108,7 @@ const AppLayout = () => {
                     >
                         <MenuItem onClick={handleMenuClose}>
                             <Link to={'/product-carts'} className="text-decoration-none">
-                                Dashboard
+                                Product cads
                             </Link>
                         </MenuItem>
                         <MenuItem onClick={handleMenuClose}>

@@ -18,10 +18,11 @@ function App() {
       element: <AppLayout />,
       children: [
         { path: "/", element: <ProductCarts /> },
-        { path: "product-detail/:product_id", element: <ProductDetail /> }, 
+        { path: "product-detail/:product_id", element: <ProductDetail /> },
       ],
       errorElement: <PageNotFound />,
     },
+    { path: "/product-carts", element: <ProductCarts /> },
     { path: "/sign-up", element: <SignUp /> },
     { path: "/sign-in", element: <SignIn /> },
   ]);
