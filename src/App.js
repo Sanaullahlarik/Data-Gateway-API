@@ -10,6 +10,7 @@ import SignUp from './components/sign-up/SignUP';
 import SignIn from './components/sign-in/SignIn';
 import ProductCarts from './components/product-carts/ProductCarts';
 import AppLayout from './components/app-layout/AppLayout';
+import ProductRoute from './components/product-route/ProductRoute';
 
 function App() {
   const router = createBrowserRouter([
@@ -17,14 +18,15 @@ function App() {
       path: "/",
       element: <AppLayout />,
       children: [
-        { path: "/", element: <ProductCarts /> },
+        { path: "/", element: <ProductRoute /> },
+        { path: "product-carts", element: <ProductCarts /> },
         { path: "product-detail/:product_id", element: <ProductDetail /> },
       ],
       errorElement: <PageNotFound />,
     },
-    { path: "/product-carts", element: <ProductCarts /> },
     { path: "/sign-up", element: <SignUp /> },
     { path: "/sign-in", element: <SignIn /> },
+    { path: "*", element: <PageNotFound /> }, 
   ]);
 
   return (

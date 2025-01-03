@@ -3,10 +3,11 @@ import { Typography, Box, Button, TextField, InputAdornment } from '@mui/materia
 import EmailIcon from '@mui/icons-material/Email';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const signInSchema = yup.object({
   email: yup.string().email("Invalid email format").required("Email is required"),
@@ -14,18 +15,27 @@ const signInSchema = yup.object({
 }).required();
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(signInSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
   });
 
-  const onSubmit = data => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("https://api.escuelajs.co/api/v1/auth/login", data);
+      localStorage.setItem("token", response.data.access_token);
+      console.log("Sign-in successful:", response.data);
+      navigate("/");
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+      alert("Invalid credentials. Please try again.");
+    }
   };
 
   return (
@@ -53,7 +63,6 @@ const SignIn = () => {
           <Typography variant="h5" gutterBottom>
             Sign In
           </Typography>
-
           <Controller
             control={control}
             name="email"
@@ -62,12 +71,12 @@ const SignIn = () => {
                 error={!!errors.email}
                 fullWidth
                 size="small"
-                type='email'
-                placeholder='Email'
+                type="email"
+                placeholder="Email"
                 {...field}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="start">
+                    <InputAdornment position="end">
                       <EmailIcon />
                     </InputAdornment>
                   ),
@@ -77,6 +86,7 @@ const SignIn = () => {
             )}
           />
 
+          {/* Password Field */}
           <Controller
             control={control}
             name="password"
@@ -90,7 +100,11 @@ const SignIn = () => {
                 {...field}
                 InputProps={{
                   endAdornment: (
-                    <InputAdornment position="start" onClick={() => setShowPassword(!showPassword)}>
+                    <InputAdornment
+                      position="end"
+                      onClick={() => setShowPassword(!showPassword)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
                     </InputAdornment>
                   ),
@@ -100,7 +114,7 @@ const SignIn = () => {
             )}
           />
 
-          <Button type='submit' variant="contained" fullWidth>
+          <Button type="submit" variant="contained" fullWidth>
             Sign In
           </Button>
 

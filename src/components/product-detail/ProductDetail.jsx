@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import SkeletonProductDetail from './SkeletonProductDetail';
 import { useSelector } from 'react-redux';
+import { addToCart } from '../store/slices/cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const ProductDetail = () => {
   const [product, setProduct] = useState([]);
@@ -12,6 +14,9 @@ const ProductDetail = () => {
   const [filteredProduct, setFilteredProduct] = useState({});
   const { product_id } = useParams();
 
+  const disPatch = useDispatch ();
+  const isExist = cartItem?.find((item) => item.id == product_id);
+ 
   const { cartItem } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -149,15 +154,15 @@ const ProductDetail = () => {
               >
                 ${product?.price}
               </Typography>
-              <Typography className='ms-3'
+              {isExist && <Typography className='ms-3'
                 variant="h6"
                 color="success.main"
                 sx={{ fontWeight: 'bold' }}
               >
                 Qty: {filteredProduct?.quantity}
-              </Typography>
+              </Typography>}
               </Box>
-              <Button
+              <Button onClick={()=>disPatch(addToCart)(product)}
                 variant="contained"
                 color="success"
                 size="large"
@@ -166,8 +171,8 @@ const ProductDetail = () => {
                   textTransform: 'uppercase',
                   fontWeight: 'bold',
                   borderRadius: '20px',
-                  px: 3,
-                }}
+                  px: 3, 
+               }}
               >
                 Add
               </Button>
