@@ -20,7 +20,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import {useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import CartList from "../cart-list/CartList";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
@@ -35,6 +35,8 @@ const ProductCarts = () => {
   const [categoryArr, setCategoryArr] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+
+  
   const itemsPerPage = 10;
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
@@ -48,7 +50,9 @@ const ProductCarts = () => {
     if (!category) {
       setFilteredProducts(products);
     } else {
-      const filtered = products.filter((item) => item.category === category.value);
+      const filtered = products.filter(
+        (item) => item.category === category.value
+      );
       setFilteredProducts(filtered);
     }
     setCurrentPage(1);
@@ -81,6 +85,7 @@ const ProductCarts = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
 
   return (
     <>
